@@ -31,42 +31,63 @@
 
             <Button
                 android:id="@+id/btn_QuickDown"
-                android:text="空格"
+                android:text="@string/btn_QuickDown"
                 android:layout_centerInParent="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/pink_button"
+                android:textSize="20sp"
+                android:gravity="center"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_margin="10dp"/>
 
             <Button
                 android:id="@+id/btn_Top"
-                android:text="上"
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/btn_QuickDown"
                 android:layout_alignLeft="@+id/btn_QuickDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:background="@drawable/pink_button"
+                android:gravity="center"
+                android:text="@string/btn_Top"
+                android:textSize="20sp" />
 
             <Button
                 android:id="@+id/btn_Down"
-                android:text="下"
+                android:text="@string/btn_Down"
                 android:layout_below="@+id/btn_QuickDown"
                 android:layout_alignLeft="@+id/btn_QuickDown"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/pink_button"
+                android:textSize="20sp"
+                android:gravity="center"
+                style="?android:attr/buttonStyleSmall"/>
 
             <Button
                 android:id="@+id/btn_Left"
-                android:text="左"
+                android:text="@string/btn_Left"
                 android:layout_toLeftOf="@+id/btn_QuickDown"
                 android:layout_alignTop="@id/btn_QuickDown"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/pink_button"
+                android:textSize="20sp"
+                android:gravity="center"
+                style="?android:attr/buttonStyleSmall"/>
 
             <Button
                 android:id="@+id/btn_Right"
-                android:text="右"
+                android:text="@string/btn_Right"
                 android:layout_toRightOf="@+id/btn_QuickDown"
                 android:layout_alignTop="@id/btn_QuickDown"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/pink_button"
+                android:textSize="20sp"
+                android:gravity="center"
+                style="?android:attr/buttonStyleSmall"/>
 
         </RelativeLayout>
 
@@ -98,7 +119,7 @@
                     android:gravity="center"
                     android:textSize="20dp"
                     android:textColor="#ffff9999"
-                    android:text="❂LEVEL❁"
+                    android:text="@string/level"
                     android:layout_marginBottom="5dp"/>
 
                 <TextView
@@ -119,7 +140,7 @@
                     android:gravity="center"
                     android:textSize="20dp"
                     android:textColor="#ffff9999"
-                    android:text="✿SCORE❀"
+                    android:text="@string/score"
                     android:layout_marginBottom="5dp"/>
 
                 <TextView
@@ -164,33 +185,123 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:background="@drawable/boder">
+            android:background="@drawable/boder"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="5dp">
 
-                <Button
-                    android:id="@+id/btn_Start"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="开始"/>
+                    android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/btn_Pause"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/btn_Start"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_Start"
+                            android:textColor="#ffffffff"
+                            style="?android:attr/buttonStyleSmall"
+                            android:background="@drawable/blue_button" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/btn_Pause"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_Pause"
+                            android:textColor="#ffffffff"
+                            android:minHeight="50dp"
+                            android:minWidth="50dp"
+                            android:background="@drawable/blue_button"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="暂停"/>
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/btn_Line"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_line"
+                            android:textColor="#ffffffff"
+                            style="?android:attr/buttonStyleSmall"
+                            android:background="@drawable/blue_button" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <Button
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/btn_Exit"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/btn_exit"
+                            android:textColor="#ffffffff"
+                            android:minHeight="50dp"
+                            android:minWidth="50dp"
+                            android:background="@drawable/blue_button"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-    
+
 </LinearLayout>

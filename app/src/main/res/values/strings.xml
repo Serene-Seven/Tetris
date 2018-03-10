@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">阿涛方块</string>
+    <string name="btn_QuickDown">↡</string>
+    <string name="btn_Top">↻</string>
+    <string name="btn_Down">⇩</string>
+    <string name="btn_Left">⇦</string>
+    <string name="btn_Right">⇨</string>
     <string name="next">❦NEXT☘</string>
+    <string name="level">❂LEVEL❁</string>
+    <string name="score">✿SCORE❀</string>
+    <string name="btn_Start">开始</string>
+    <string name="btn_Pause">暂停</string>
+    <string name="btn_line">画线</string>
+    <string name="btn_exit">退出</string>
 </resources>

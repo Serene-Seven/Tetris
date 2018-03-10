@@ -1,6 +1,8 @@
 package com.example.tetris;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import java.util.Random;
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Paint linePaint;
     // 方块画笔
     Paint boxPaint;
+    // 状态画笔
+    Paint statePaint;
     // 表示俄罗斯方块当前旋转状态，有四种
     int boxState = 1;
     // 地图，布尔值判断该单元块是否占据方块
@@ -63,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean isPause;
     // 游戏结束状态
     public boolean isOver;
+
+    // 暂停按钮
+    Button btnPause;
+    // 画线按钮
+    Button btnLine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,10 +165,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boxPaint.setColor(Color.BLACK);
         mapPaint = new Paint();
         mapPaint.setColor(Color.parseColor("#FFFFCCCC"));
+        statePaint = new Paint();
+        statePaint.setColor(Color.parseColor("#FFFF3366"));
+        statePaint.setTextSize(100);
         //一般都会把抗锯齿打开
         linePaint.setAntiAlias(true);
         boxPaint.setAntiAlias(true);
         mapPaint.setAntiAlias(true);
+        statePaint.setAntiAlias(true);
         // 得到父容器
         FrameLayout layoutGame = findViewById(R.id.Fr_Game);
         // 实例化游戏区域
@@ -194,6 +208,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // 竖线每一条都从Y为0开始
                     canvas.drawLine(y*boxSize, 0, y*boxSize, view.getHeight(), linePaint);
                 }
+                // 画结束状态
+                if (isOver) {
+                    canvas.drawText("游戏结束", view.getWidth()/2-statePaint.measureText("游戏结束")/2, view.getHeight()/2, statePaint);
+                }
+                // 画暂停状态
+                if (isPause && !isOver) {
+                    canvas.drawText("暂停中", view.getWidth()/2-statePaint.measureText("暂停中")/2, view.getHeight()/2, statePaint);
+                }
             }
         };
         // 设置游戏区域大小
@@ -220,6 +242,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 初始化监听
      */
     public void initListener() {
+        // 初始化按钮
+        btnPause = findViewById(R.id.btn_Pause);
+        btnLine = findViewById(R.id.btn_Line);
         findViewById(R.id.btn_Left).setOnClickListener(this);
         findViewById(R.id.btn_Top).setOnClickListener(this);
         findViewById(R.id.btn_Right).setOnClickListener(this);
@@ -227,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.btn_Start).setOnClickListener(this);
         findViewById(R.id.btn_Pause).setOnClickListener(this);
         findViewById(R.id.btn_QuickDown).setOnClickListener(this);
+        findViewById(R.id.btn_Exit).setOnClickListener(this);
     }
 
     /**
@@ -285,6 +311,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 }
                 break;
+            case R.id.btn_Exit:
+                // 弹出通知窗口询问是否退出
+                pauseGame();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("QAQ真的要走吗！")
+                        .setPositiveButton("再玩会",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                        arg0.dismiss();
+                                        pauseGame();
+                                    }
+                                })
+                        .setNegativeButton("溜了溜了",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0,
+                                                        int arg1) {
+                                        finish();
+                                    }
+                                })
+                        .setCancelable(false)
+                        .create().show();
+                break;
         }
 
         // 每次点击刷新视图，重绘view
@@ -297,8 +348,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void pauseGame(){
         if (isPause) {
             isPause = false;
+            btnPause.setText("暂停");
         } else {
             isPause = true;
+            btnPause.setText("继续");
         }
     }
 
