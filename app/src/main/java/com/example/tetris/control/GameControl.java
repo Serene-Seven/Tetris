@@ -254,4 +254,12 @@ public class GameControl {
                 break;
         }
     }
+
+    /**
+     * 绘制下一块的预览区域
+     * @param canvas
+     */
+    public void drawNext(Canvas canvas, int width) {
+        boxesModel.drawNext(canvas, width);
+    }
 }

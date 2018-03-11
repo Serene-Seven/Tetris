@@ -22,18 +22,31 @@ public class Boxes {
     public int boxType;
     // 方块大小
     public int boxSize;
-    // 表示俄罗斯方块当前旋转状态，有四种
-    int boxState = 1;
+    // 表示俄罗斯方块当前旋转状态
+    int boxState;
     // 方块画笔
     Paint boxPaint;
     // 记录旋转前的状态
     Point[] historyBox;
+    // 下一块方块
+    public Point[] boxesNext;
+    // 下一块方块的类型
+    public int boxNextType;
+    // 下一块方块的方块大小
+    public int boxNextSize;
+    // 下一块方块画笔
+    Paint nextBoxPaint;
+    // 表示下一俄罗斯方块旋转状态
+    int boxNextState;
 
     public Boxes(int boxSize) {
         this.boxSize = boxSize;
         boxPaint = new Paint();
         boxPaint.setColor(Color.BLACK);
         boxPaint.setAntiAlias(true);
+        nextBoxPaint = new Paint();
+        nextBoxPaint.setColor(Color.parseColor("#FFFFCCCC"));
+        nextBoxPaint.setAntiAlias(true);
         // 初始化历史方块
         historyBox = new Point[]{new Point(), new Point(), new Point(), new Point()};
     }
@@ -42,51 +55,68 @@ public class Boxes {
      * 新的方块
      */
     public void newBoxes() {
+        if (boxesNext == null) {
+            // 第一次来
+            newBoxesNext();
+        }
+        // 旧的下一方块赋给现在的方块
+        boxes = boxesNext;
+        boxType = boxNextType;
+        boxState = boxNextState;
+        newBoxesNext();
+        // 新生成下一方块
+    }
+
+    /**
+     * 生成下一块方块
+     * @param
+     */
+    public void newBoxesNext() {
         // 随机生成一个新的方块，[0,6]
         Random random = new Random();
-        boxType = random.nextInt(TYPE_BOX);
-        switch (boxType) {
+        boxNextType = random.nextInt(TYPE_BOX);
+        switch (boxNextType) {
             // 田
             case 0:
-                boxes = new Point[] {new Point(0, 4), new Point(0, 5),
+                boxesNext = new Point[] {new Point(0, 4), new Point(0, 5),
                         new Point(1, 4), new Point(1, 5)};
-                boxState = 2;
+                boxNextState = 2;
                 break;
             // 1__
             case 1:
-                boxes = new Point[] {new Point(1, 3), new Point(0, 3),
+                boxesNext = new Point[] {new Point(1, 3), new Point(0, 3),
                         new Point(1, 4), new Point(1, 5)};
-                boxState = 1;
+                boxNextState = 1;
                 break;
             // __1
             case 2:
-                boxes = new Point[] {new Point(1, 5), new Point(0, 5),
+                boxesNext = new Point[] {new Point(1, 5), new Point(0, 5),
                         new Point(1, 3), new Point(1, 4)};
-                boxState = 4;
+                boxNextState = 4;
                 break;
             // -i_
             case 3:
-                boxes = new Point[] {new Point(0, 4), new Point(0, 3),
+                boxesNext = new Point[] {new Point(0, 4), new Point(0, 3),
                         new Point(1, 4), new Point(1, 5)};
-                boxState = 3;
+                boxNextState = 3;
                 break;
             // _i-
             case 4:
-                boxes = new Point[] {new Point(1, 4), new Point(0, 4),
+                boxesNext = new Point[] {new Point(1, 4), new Point(0, 4),
                         new Point(1, 3), new Point(0, 5)};
-                boxState = 4;
+                boxNextState = 4;
                 break;
             // 凸
             case 5:
-                boxes = new Point[] {new Point(1, 4), new Point(0, 4),
+                boxesNext = new Point[] {new Point(1, 4), new Point(0, 4),
                         new Point(1, 3), new Point(1, 5)};
-                boxState = 4;
+                boxNextState = 4;
                 break;
             // ——
             case 6:
-                boxes = new Point[] {new Point(0, 4), new Point(0, 3),
+                boxesNext = new Point[] {new Point(0, 4), new Point(0, 3),
                         new Point(0, 5), new Point(0, 6)};
-                boxState = 4;
+                boxNextState = 4;
                 break;
         }
     }
@@ -342,5 +372,22 @@ public class Boxes {
         }
         // 然后再判断是否还需要修正
         correctBoundary(mapsModel);
+    }
+
+    /**
+     * 绘制下一块方块
+     * @param canvas
+     */
+    public void drawNext(Canvas canvas, int width) {
+        if (boxesNext != null) {
+            if (boxNextSize == 0) {
+                boxNextSize = width / 6;
+            }
+            for (int i = 0; i < boxesNext.length; i++) {
+                canvas.drawRect((boxesNext[i].y-2)*boxNextSize, (boxesNext[i].x+2)*boxNextSize,
+                        (boxesNext[i].y-2)*boxNextSize + boxNextSize, (boxesNext[i].x+2)*boxNextSize + boxNextSize,
+                        nextBoxPaint);
+            }
+        }
     }
 }

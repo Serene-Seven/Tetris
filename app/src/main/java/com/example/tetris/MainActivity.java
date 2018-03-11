@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // view里面没有变量，没有数据
     // 游戏区域控件
     View gamePanel;
+    // 下一块预览组件
+    public View nextPanel;
 
     // 游戏控制器
     GameControl gameControl;
@@ -73,6 +75,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //gamePanel.setBackgroundColor(Color.GRAY);
         // 添加到父容器
         layoutGame.addView(gamePanel);
+
+        // 实例化下一块预览区域
+        nextPanel = new View(this){
+            @Override
+            protected void onDraw(Canvas canvas) {
+                super.onDraw(canvas);
+                gameControl.drawNext(canvas, nextPanel.getWidth());
+            }
+        };
+        // 设置游戏区域大小
+        nextPanel.setLayoutParams(new FrameLayout.LayoutParams(Config.yWith * 2/3, -1));
+        //nextPanel.setBackgroundColor(Color.BLUE);
+        // 添加到父容器
+        FrameLayout layoutNext = findViewById(R.id.Fr_Next);
+        layoutNext.addView(nextPanel);
     }
 
     /**
@@ -96,5 +113,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         gameControl.onClick(v.getId(), this);
         // 每次点击刷新视图，重绘view
         gamePanel.invalidate();
+        nextPanel.invalidate();
     }
 }
