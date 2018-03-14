@@ -2,6 +2,7 @@
 **该项目是根据一篇推送的灵感做成，献给我的女朋友❤**  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/t1.jpg"/></div>
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/t2.png"/></div>
+
 ①、俄罗斯单元块基本功能：自动下落，左右移动，旋转，下落，快速下落，下落结束判断，堆积成块  
 ②、旋转的时候判断旋转后的位置是否出边界，如果出边界系统会帮你修正位置，但是如果旋转后的位置碰到别的方块，则不准旋转（因为我不知道旋转后碰到地图方块该怎么修正囧） 
 ③、提供开始功能，点了开始后会弹出对话框提示是否开始新游戏，防止误触。  
