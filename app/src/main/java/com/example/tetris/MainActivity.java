@@ -182,4 +182,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             gameControl.pauseGame();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        gameControl.setExit();
+    }
 }

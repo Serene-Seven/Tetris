@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -156,14 +157,13 @@ public class GameControl implements View.OnClickListener{
         boxesModel.newBoxes();
         // 自动下落
         if (downThread == null) {
-            downThread = new Thread() {
+            final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
-                    super.run();
                     while (true) {
                         try {
                             // 休眠的毫秒
-                            sleep(Config.sleepTime);
+                            Thread.sleep(Config.sleepTime);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -186,6 +186,14 @@ public class GameControl implements View.OnClickListener{
                         msg.obj = "invalidate";
                         handler.sendMessage(msg);
                     }
+                }
+            };
+            downThread = new Thread() {
+                @Override
+                public void run() {
+                    Looper.prepare();
+                    new Handler().post(runnable);
+                    Looper.loop();
                 }
             };
             downThread.start();
