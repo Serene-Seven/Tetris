@@ -1,6 +1,8 @@
 # 阿涛方块
 **该项目是根据一篇推送的灵感做成，献给我的女朋友❤**  
+
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/t1.jpg"/></div>
+
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/t2.png"/></div>
 
 ①、俄罗斯单元块基本功能：自动下落，左右移动，旋转，下落，快速下落，下落结束判断，堆积成块  
@@ -12,26 +14,37 @@
 ⑦、到达十万分时，游戏胜利，界面掉落钻戒  
 ⑧、加入音效功能，具体到每个按钮，方块的移动，消除，胜利，失败等  
 ⑨、提供换肤功能，即换界面颜色  
+
 ![](https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/1.gif)
+
 ## 游戏截图：
 游戏界面：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/3.png"/></div>
+
 打开音效：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/2.png"/></div>
+
 进行游戏：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/4.png"/></div>
+
 暂停：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/5.png"/></div>
+
 通关：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/6.png"/></div>
+
 退出：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/7.png"/></div>
+
 换肤：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/10.png"/></div>
+
 紫色：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/8.png"/></div>
+
 蓝色：  
 <div align=center><img width="380" height="600" src="https://github.com/Serene-Seven/Tetris/raw/master/Screenshots/9.png"/></div>
+
 ## 已修复的BUG有：
 
 ## 还未修复的BUG有：
