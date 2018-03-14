@@ -3,7 +3,10 @@ package com.example.tetris.model;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Point;
+
+import com.example.tetris.Config;
 
 import java.util.Random;
 
@@ -22,6 +25,8 @@ public class Boxes {
     public int boxType;
     // 方块大小
     public int boxSize;
+    // 方块的颜色
+    public int boxColor;
     // 表示俄罗斯方块当前旋转状态
     int boxState;
     // 方块画笔
@@ -30,22 +35,29 @@ public class Boxes {
     Point[] historyBox;
     // 下一块方块
     public Point[] boxesNext;
+    // 下一块方块预览版
+    public Point[] miniboxesNext;
     // 下一块方块的类型
     public int boxNextType;
     // 下一块方块的方块大小
     public int boxNextSize;
+    // 下一块方块的颜色
+    public int boxNextColor;
     // 下一块方块画笔
     Paint nextBoxPaint;
     // 表示下一俄罗斯方块旋转状态
     int boxNextState;
 
+    // 预览成问号
+    public float[][] nextMark;
+    // 方块成钻戒
+    public float[][] boxDiamondRing;
+
     public Boxes(int boxSize) {
         this.boxSize = boxSize;
         boxPaint = new Paint();
-        boxPaint.setColor(Color.BLACK);
         boxPaint.setAntiAlias(true);
         nextBoxPaint = new Paint();
-        nextBoxPaint.setColor(Color.parseColor("#FFFFCCCC"));
         nextBoxPaint.setAntiAlias(true);
         // 初始化历史方块
         historyBox = new Point[]{new Point(), new Point(), new Point(), new Point()};
@@ -63,8 +75,136 @@ public class Boxes {
         boxes = boxesNext;
         boxType = boxNextType;
         boxState = boxNextState;
-        newBoxesNext();
+        boxColor = boxNextColor;
+        boxPaint.setColor(boxColor);
         // 新生成下一方块
+        newBoxesNext();
+    }
+
+    /**
+     * 产生胜利的钻戒方块
+     */
+    public void newDiamondRing() {
+        boxDiamondRing = new float[][]{
+                {0, (float)3.5},// 第一行第一个红色三角形
+                {1, (float)4.25},// 第一行第二个橘色倒三角形
+                {0, 5},// 第一行第三个黄色三角形
+                {1, (float)5.75},// 第一行第四个绿色倒三角形
+                {0, (float)6.5},// 第一行第五个蓝色三角形
+                {(float)1.1, 3},// 第二行第一个紫色三角形
+                {(float)1.1, (float)4.5},// 第二行第二个粉色长方形
+                {(float)1.1, 7},// 第二行第三个黄色三角形
+                {(float)3.2, (float)3.4},{(float)3.2, (float)4.5},{(float)3.2, (float)5.6},// 第四行三个蓝色正方形
+                {(float)4.3, (float)2.3},{(float)4.3, (float)6.7},// 第五行两个蓝色正方形
+                {(float)5.4, (float)2.3},{(float)5.4, (float)6.7},// 第六行两个蓝色正方形
+                {(float)6.5, (float)3.4},{(float)6.5, (float)4.5},{(float)6.5, (float)5.6},// 第七行三个蓝色正方形
+        };
+        // 制作问号
+        nextMark = new float[][]{{(float)0.9, 3}, {(float)0.9, (float)4.2}, {2, (float)1.9}, {2, (float)5.1}, {(float)3.2, (float)5.1}, {(float)4.3, 4}, {(float)5.4, 4}, {(float)7.4, 4}};
+        nextBoxPaint.setColor(Color.parseColor("#FFFFCCCC"));
+    }
+
+    /**
+     * 画钻戒
+     */
+    public void drawDiamondRing(Canvas canvas) {
+        Path path;
+        float x;
+        float y;
+        // 第一行第一个红色三角形
+        x = boxDiamondRing[0][1];
+        y = boxDiamondRing[0][0];
+        boxPaint.setColor(Color.rgb(240,67,20));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((x-(float)0.5)*boxSize, (y+1)*boxSize);
+        path.lineTo((x+(float)0.5)*boxSize, (y+1)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第一行第二个橘色倒三角形
+        x = boxDiamondRing[1][1];
+        y = boxDiamondRing[1][0];
+        boxPaint.setColor(Color.rgb(254,149,33));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((x-(float)0.5)*boxSize, (y-1)*boxSize);
+        path.lineTo((x+(float)0.5)*boxSize, (y-1)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第一行第三个黄色三角形
+        x = boxDiamondRing[2][1];
+        y = boxDiamondRing[2][0];
+        boxPaint.setColor(Color.rgb(255,255,133));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((x-(float)0.5)*boxSize, (y+1)*boxSize);
+        path.lineTo((x+(float)0.5)*boxSize, (y+1)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第一行第四个绿色倒三角形
+        x = boxDiamondRing[3][1];
+        y = boxDiamondRing[3][0];
+        boxPaint.setColor(Color.rgb(80,160,42));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((x-(float)0.5)*boxSize, (y-1)*boxSize);
+        path.lineTo((x+(float)0.5)*boxSize, (y-1)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第一行第五个蓝色三角形
+        x = boxDiamondRing[4][1];
+        y = boxDiamondRing[4][0];
+        boxPaint.setColor(Color.rgb(153,204,255));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((x-(float)0.5)*boxSize, (y+1)*boxSize);
+        path.lineTo((x+(float)0.5)*boxSize, (y+1)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第二行第二个粉色长方形
+        x = boxDiamondRing[6][1];
+        y = boxDiamondRing[6][0];
+        boxPaint.setColor(Color.parseColor("#ffcce6"));
+        canvas.drawRect(x*boxSize, y*boxSize,
+                (x+1)*boxSize, (y+2)*boxSize, boxPaint);
+
+        // 第二行第一个紫色三角形
+        x = boxDiamondRing[5][1];
+        y = boxDiamondRing[5][0];
+        float dx = boxDiamondRing[6][1];
+        boxPaint.setColor(Color.rgb(175,75,250));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((dx-(float)0.1)*boxSize, y*boxSize);
+        path.lineTo((dx-(float)0.1)*boxSize, (y+2)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        // 第二行第三个黄色三角形
+        x = boxDiamondRing[7][1];
+        y = boxDiamondRing[7][0];
+        dx = boxDiamondRing[6][1];
+        boxPaint.setColor(Color.rgb(252,237,81));
+        path = new Path();
+        path.moveTo(x*boxSize, y*boxSize);// 此点为多边形的起点
+        path.lineTo((dx+(float)1.1)*boxSize, y*boxSize);
+        path.lineTo((dx+(float)1.1)*boxSize, (y+2)*boxSize);
+        path.close(); // 使这些点构成封闭的多边形
+        canvas.drawPath(path, boxPaint);
+
+        boxPaint.setColor(Color.parseColor("#ff99ccff"));
+        // 剩余的蓝色方块绘制
+        for (int i = 8; i < boxDiamondRing.length; i++) {
+            x = boxDiamondRing[i][1];
+            y = boxDiamondRing[i][0];
+            canvas.drawRect(x*boxSize, y*boxSize,
+                    (x+1)*boxSize, (y+1)*boxSize, boxPaint);
+        }
     }
 
     /**
@@ -75,47 +215,64 @@ public class Boxes {
         // 随机生成一个新的方块，[0,6]
         Random random = new Random();
         boxNextType = random.nextInt(TYPE_BOX);
+        // 随机选取一个颜色
+        boxNextColor = Config.color[random.nextInt(Config.colorType)];
+        nextBoxPaint.setColor(boxNextColor);
         switch (boxNextType) {
             // 田
             case 0:
                 boxesNext = new Point[] {new Point(0, 4), new Point(0, 5),
                         new Point(1, 4), new Point(1, 5)};
+                miniboxesNext = new Point[] {new Point(1, 1), new Point(1, 2),
+                        new Point(2, 1), new Point(2, 2)};
                 boxNextState = 2;
                 break;
             // 1__
             case 1:
                 boxesNext = new Point[] {new Point(1, 3), new Point(0, 3),
                         new Point(1, 4), new Point(1, 5)};
+                miniboxesNext = new Point[] {new Point(1, 1), new Point(2, 1),
+                        new Point(2, 2), new Point(2, 3)};
                 boxNextState = 1;
                 break;
             // __1
             case 2:
                 boxesNext = new Point[] {new Point(1, 5), new Point(0, 5),
                         new Point(1, 3), new Point(1, 4)};
+                miniboxesNext = new Point[] {new Point(1, 3), new Point(2, 1),
+                        new Point(2, 2), new Point(2, 3)};
                 boxNextState = 4;
                 break;
             // -i_
             case 3:
                 boxesNext = new Point[] {new Point(0, 4), new Point(0, 3),
                         new Point(1, 4), new Point(1, 5)};
+                miniboxesNext = new Point[] {new Point(1, 1), new Point(1, 2),
+                        new Point(2, 2), new Point(2, 3)};
                 boxNextState = 3;
                 break;
             // _i-
             case 4:
                 boxesNext = new Point[] {new Point(1, 4), new Point(0, 4),
                         new Point(1, 3), new Point(0, 5)};
+                miniboxesNext = new Point[] {new Point(1, 2), new Point(1, 3),
+                        new Point(2, 1), new Point(2, 2)};
                 boxNextState = 4;
                 break;
             // 凸
             case 5:
                 boxesNext = new Point[] {new Point(1, 4), new Point(0, 4),
                         new Point(1, 3), new Point(1, 5)};
+                miniboxesNext = new Point[] {new Point(1, 2), new Point(2, 1),
+                        new Point(2, 2), new Point(2, 3)};
                 boxNextState = 4;
                 break;
             // ——
             case 6:
                 boxesNext = new Point[] {new Point(0, 4), new Point(0, 3),
                         new Point(0, 5), new Point(0, 6)};
+                miniboxesNext = new Point[] {new Point(2, 1), new Point(2, 2),
+                        new Point(2, 3)};
                 boxNextState = 4;
                 break;
         }
@@ -134,13 +291,25 @@ public class Boxes {
     }
 
     /**
+     * 钻戒的移动函数
+     */
+    public boolean moveDiamondRing(int dx, int dy) {
+        // 遍历钻戒的所有单元块
+        for (int i = 0; i < boxDiamondRing.length; i++) {
+            boxDiamondRing[i][0] += dx;
+            boxDiamondRing[i][1] += dy;
+        }
+        return true;
+    }
+
+    /**
      * 移动的方法
      * @param dx 横坐标偏移量
      * @param dy 纵坐标偏移量
      * @return
      */
-    public boolean move(int dx, int dy, Maps mapsModel, Boolean isOver, Boolean isPause) {
-        if (isPause || isOver || boxes == null) {
+    public boolean move(int dx, int dy, Maps mapsModel, Boolean isPause) {
+        if (isPause || boxes == null) {
             return false;
         }
         // 把方块预移动的点传入判断边界
@@ -196,8 +365,8 @@ public class Boxes {
      * 旋转
      * @return
      */
-    public boolean rotate(Maps mapsModel, Boolean isOver, Boolean isPause) {
-        if (isPause || isOver || boxes == null) {
+    public boolean rotate(Maps mapsModel, Boolean isPause) {
+        if (isPause || boxes == null) {
             return false;
         }
         // 遍历当前下落方块的所有单元块，每个都绕中心点顺时针旋转九十度
@@ -380,12 +549,39 @@ public class Boxes {
      */
     public void drawNext(Canvas canvas, int width) {
         if (boxesNext != null) {
-            if (boxNextSize == 0) {
-                boxNextSize = width / 6;
+            // 预览区域为五行五列(没显示)
+            boxNextSize = width / 5;
+            for (int i = 0; i < miniboxesNext.length; i++) {
+                if (boxNextType == 6) {
+                    // 把——竹竿画长一点
+                    canvas.drawRect((miniboxesNext[i].y - (float)0.5)*boxNextSize, (miniboxesNext[i].x)*boxNextSize,
+                            (miniboxesNext[i].y + (float)0.5)*boxNextSize + boxNextSize, (miniboxesNext[i].x)*boxNextSize + boxNextSize,
+                            nextBoxPaint);
+                } else if (boxNextType == 0) {
+                    // 把田画居中一点
+                    canvas.drawRect((miniboxesNext[i].y + (float)0.5)*boxNextSize, (miniboxesNext[i].x + (float)0.5)*boxNextSize,
+                            (miniboxesNext[i].y + (float)0.5)*boxNextSize + boxNextSize, (miniboxesNext[i].x + (float)0.5)*boxNextSize + boxNextSize,
+                            nextBoxPaint);
+                } else {
+                    canvas.drawRect((miniboxesNext[i].y)*boxNextSize, (miniboxesNext[i].x)*boxNextSize,
+                            (miniboxesNext[i].y)*boxNextSize + boxNextSize, (miniboxesNext[i].x)*boxNextSize + boxNextSize,
+                            nextBoxPaint);
+                }
             }
-            for (int i = 0; i < boxesNext.length; i++) {
-                canvas.drawRect((boxesNext[i].y-2)*boxNextSize, (boxesNext[i].x+2)*boxNextSize,
-                        (boxesNext[i].y-2)*boxNextSize + boxNextSize, (boxesNext[i].x+2)*boxNextSize + boxNextSize,
+        }
+    }
+
+    /**
+     * 下一块预览画成问号
+     */
+    public void drawMark(Canvas canvas, int width) {
+        if (nextMark != null) {
+            // 预览区域为五行五列(没显示)
+            boxNextSize = width / 9;
+            // 画问号
+            for (int i = 0; i < nextMark.length; i++) {
+                canvas.drawRect((nextMark[i][1])*boxNextSize, (nextMark[i][0])*boxNextSize,
+                        (nextMark[i][1])*boxNextSize + boxNextSize, (nextMark[i][0])*boxNextSize + boxNextSize,
                         nextBoxPaint);
             }
         }

@@ -8,4 +8,27 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- 颜色选择框 -->
+    <style name="dialog" parent="@android:style/Theme.Dialog">
+        <!-- 设置未浮动窗口 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 设置无边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- 设置无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 设置完全透明 -->
+        <item name="android:windowBackground">@color/sc_transparent_background</item>
+        <!-- 设置屏幕变暗 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 设置动画效果 -->
+        <item name="android:windowAnimationStyle">@style/MyAnimation</item>
+    </style>
+
+    <style name="MyAnimation">
+        <!-- 窗口弹出 -->
+        <item name="android:windowEnterAnimation">@anim/dialog_top_enter</item>
+        <!-- 窗口退下 -->
+        <item name="android:windowExitAnimation">@anim/dialog_top_exit</item>
+    </style>
+
 </resources>
